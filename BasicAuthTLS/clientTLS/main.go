@@ -11,15 +11,18 @@ import (
 )
 
 func main() {
+	// Чтение сертификата CA из файла
 	caCert, err := os.ReadFile("ca.crt")
 	if err != nil {
 		log.Fatal("Failed to read CA cert:", err)
 	}
-	caCertPool := x509.NewCertPool()
+	// Пул доверенных CA-сертификатов
+	caCertPool := x509.NewCertPool() 
 	if !caCertPool.AppendCertsFromPEM(caCert) {
 		log.Fatal("Failed to parse CA cert")
 	}
 
+	// Настройка транспорта (low-level клиент) для клиента (high-level)
 	transport := &http.Transport{
 		TLSClientConfig: &tls.Config{
 			RootCAs: caCertPool,
@@ -29,6 +32,15 @@ func main() {
 	}
 	client := &http.Client{Transport: transport}
 
+	// Настроим так же клиента для тестов
+	testTransport := &http.Transport{
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true, // Отключили проверку сертификатов
+		},
+		ForceAttemptHTTP2: true,
+	}
+	testClient := &http.Client{Transport: testTransport}
+
 	req, err := http.NewRequest("GET", "https://localhost:8443/api/basicauthTLS", nil)
 	if err != nil {
 		log.Fatal(err)
@@ -36,12 +48,23 @@ func main() {
 
 	req.SetBasicAuth("Alex", "secret")
 
-	resp, err := client.Do(req)
+	resp, err := testClient.Do(req)
 	if err != nil {
 		log.Fatal("Request failed:", err)
+		return 
 	}
 	defer resp.Body.Close()
 
 	body, _ := io.ReadAll(resp.Body)
+	fmt.Printf("Status: %s\nBody: %s\n", resp.Status, body)
+
+	resp, err = client.Do(req)
+	if err != nil {
+		log.Fatal("Request failed:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	body, _ = io.ReadAll(resp.Body)
 	fmt.Printf("Status: %s\nBody: %s\n", resp.Status, body)
 }
