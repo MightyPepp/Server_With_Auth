@@ -4,7 +4,19 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"golang.org/x/crypto/bcrypt"
 )
+
+// Пока сделаем просто - мапа user:hashPassword
+var userPasswords = map[string]string{
+	"Alex": "",
+	"Bob": "",
+	"Sara": "",
+}
+
+// Тут мы, следуя занятному примеру от Gemini,
+// реализуем базовый процесс регистрации и 
+// авторизации c использованием хэша пароля
 
 func main() {
 	http.HandleFunc("/api/basicauthTLS", func(w http.ResponseWriter, r *http.Request) {
