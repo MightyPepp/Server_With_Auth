@@ -51,20 +51,20 @@ func main() {
 
 	// Выполним запрос с обоих клиентов
 	resp, err := testClient.Do(req)
-	defer resp.Body.Close()
 	if err != nil {
 		log.Fatal("Request failed:", err)
 		return 
 	}
+	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Printf("Status: %s\nBody: %s\n", resp.Status, body)
 
 	resp, err = client.Do(req)
-	defer resp.Body.Close()
 	if err != nil {
 		log.Fatal("Request failed:", err)
 		return
 	}
+	defer resp.Body.Close()
 	body, _ = io.ReadAll(resp.Body)
 	fmt.Printf("Status: %s\nBody: %s\n", resp.Status, body)
 }
