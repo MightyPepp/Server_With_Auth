@@ -41,6 +41,7 @@ func main() {
 	}
 	testClient := &http.Client{Transport: testTransport}
 
+	// Подготовим запрос
 	req, err := http.NewRequest("GET", "https://localhost:8443/api/basicauthTLS", nil)
 	if err != nil {
 		log.Fatal(err)
@@ -48,13 +49,13 @@ func main() {
 
 	req.SetBasicAuth("Alex", "secret")
 
+	// Выполним запрос с обоих клиентов
 	resp, err := testClient.Do(req)
 	if err != nil {
 		log.Fatal("Request failed:", err)
 		return 
 	}
 	defer resp.Body.Close()
-
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Printf("Status: %s\nBody: %s\n", resp.Status, body)
 
@@ -64,7 +65,6 @@ func main() {
 		return
 	}
 	defer resp.Body.Close()
-
 	body, _ = io.ReadAll(resp.Body)
 	fmt.Printf("Status: %s\nBody: %s\n", resp.Status, body)
 }
