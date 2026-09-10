@@ -1,0 +1,5 @@
+*.crt
+*.env
+*.key
+*.csr
+*.srl

@@ -1,0 +1,47 @@
+package main
+
+import (
+	"crypto/tls"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"crypto/x509"
+)
+
+func main() {
+	caCert, err := os.ReadFile("ca.crt")
+	if err != nil {
+		log.Fatal("Failed to read CA cert:", err)
+	}
+	caCertPool := x509.NewCertPool()
+	if !caCertPool.AppendCertsFromPEM(caCert) {
+		log.Fatal("Failed to parse CA cert")
+	}
+
+	transport := &http.Transport{
+		TLSClientConfig: &tls.Config{
+			RootCAs: caCertPool,
+			MinVersion: tls.VersionTLS12,
+		},
+		ForceAttemptHTTP2: true,
+	}
+	client := &http.Client{Transport: transport}
+
+	req, err := http.NewRequest("GET", "https://localhost:8443/api/basicauthTLS", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	req.SetBasicAuth("Alex", "secret")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal("Request failed:", err)
+	}
+	defer resp.Body.Close()
+
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Printf("Status: %s\nBody: %s\n", resp.Status, body)
+}
