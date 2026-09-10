@@ -11,6 +11,7 @@ func main() {
 		user, pass, ok := r.BasicAuth()
 		if !ok {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`) // По стандартам надо так
 			return
 		}
 		if user == "Alex" && pass == "secret" {
