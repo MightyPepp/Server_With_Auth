@@ -27,7 +27,7 @@ fi
 
 echo "Запускаем сервер"
 
-nohup ./srv > /home/mighty-pepe/Desktop/Server_With_Auth/BasicAuthTLSHashedPassword/serverTLSHashedPassword/logs/log.txt 2>&1 &
+nohup ./srv > /dev/null 2>&1 &
 
 # Четвёртый этап:
 # При graceful shutdown (и не только) надо:
