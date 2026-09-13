@@ -29,37 +29,41 @@ func configServerTLS() (*http.ServeMux, *http.Server, error) {
 	return mux, server, nil
 }
 
-func main() {
-	file, err := os.OpenFile("/home/mighty-pepe/Desktop/Server_With_Auth/BasicAuthTLSHashedPassword/serverTLSHashedPassword/logs/log.txt", os.O_WRONLY, 0664)
+func getLogger(outputPath string) (*log.Logger, *os.File) {
+	file, err := os.OpenFile(outputPath, os.O_WRONLY, 0664)
 	if err != nil {
 		log.Printf("Не удалось открыть файл логов: %s\n", err)
 	}
-	defer file.Close()
-	log.SetOutput(file)
-	sigChan := make(chan os.Signal, 1)
+	myLogger := log.New(file, "SERVER: ", log.Lmsgprefix | log.Ldate | log.Ltime)
+	return myLogger, file
+}
 
-	signal.Notify(sigChan, syscall.SIGTERM)
-	
+func main() {
+	myLogger, outputFile := getLogger("/home/mighty-pepe/Desktop/Server_With_Auth/server/logs/log.txt")
+	defer outputFile.Close()
+
 	mux, server, err := configServerTLS()
 	if err != nil {
-		log.Printf("Ошибка конфигурации сервера: %s\n", err)
+		myLogger.Printf("Ошибка конфигурации сервера: %s\n", err)
 	}
-
 	mux.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("Запрос на ручку: %s", r.URL)
+		myLogger.Printf("Запрос на ручку: %s", r.URL)
 		w.Write([]byte("pong"))
 	})
 
 	go func() {
+		myLogger.Printf("Запуск сервера на порту %s", server.Addr)
 		if err := server.ListenAndServeTLS("", ""); err != http.ErrServerClosed {
-			log.Fatal("Сервер упал с ошибкой:", err)
+			myLogger.Fatal("Сервер упал с ошибкой:", err)
 		}
 	}()
 
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGTERM)
 	<-sigChan
-	log.Println("Получен сигнал SIGTERM, начинаем завершение работы сервера.")
+	myLogger.Println("Получен сигнал SIGTERM, начинаем завершение работы сервера.")
 	if err := server.Shutdown(context.Background()); err != nil {
-		log.Printf("Ошибка остановки работы сервера: %s\n", err)
+		myLogger.Printf("Ошибка остановки работы сервера: %s\n", err)
 	}
-	log.Println("Работа сервера завершена.")
+	myLogger.Println("Работа сервера завершена.")
 }
