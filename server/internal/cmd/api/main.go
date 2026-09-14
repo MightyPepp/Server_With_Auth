@@ -8,6 +8,8 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+
+	handlers "serverTLSHashedPassword/internal/handlers"
 )
 
 func configServerTLS() (*http.ServeMux, *http.Server, error) {
@@ -39,6 +41,11 @@ func getLogger(outputPath string) (*log.Logger, *os.File) {
 }
 
 func main() {
+	psswds := make(map[string]string)
+	psswds["User1"] = "Psswd1"
+	psswds["User2"] = "Psswd2"
+	myHandler := handlers.NewMyHandler(psswds)
+	
 	myLogger, outputFile := getLogger("/home/mighty-pepe/Desktop/Server_With_Auth/server/logs/log.txt")
 	defer outputFile.Close()
 
@@ -50,6 +57,7 @@ func main() {
 		myLogger.Printf("Запрос на ручку: %s", r.URL)
 		w.Write([]byte("pong"))
 	})
+	mux.HandleFunc("/api/auth", myHandler.AuthHandler)
 
 	go func() {
 		myLogger.Printf("Запуск сервера на порту %s", server.Addr)
