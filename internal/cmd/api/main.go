@@ -22,7 +22,7 @@ func configServerTLS() (*http.ServeMux, *http.Server, error) {
 	}
 
 	server := &http.Server{
-		Addr: ":8443",
+		Addr:    ":8443",
 		Handler: mux,
 		TLSConfig: &tls.Config{
 			Certificates: []tls.Certificate{cert},
@@ -36,7 +36,7 @@ func getLogger(outputPath string) (*log.Logger, *os.File) {
 	if err != nil {
 		log.Printf("Не удалось открыть файл логов: %s\n", err)
 	}
-	myLogger := log.New(file, "SERVER: ", log.Lmsgprefix | log.Ldate | log.Ltime)
+	myLogger := log.New(file, "SERVER: ", log.Lmsgprefix|log.Ldate|log.Ltime)
 	return myLogger, file
 }
 
@@ -45,7 +45,7 @@ func main() {
 	psswds["User1"] = "Psswd1"
 	psswds["User2"] = "Psswd2"
 	myHandler := handlers.NewMyHandler(psswds)
-	
+
 	myLogger, outputFile := getLogger("/home/mighty-pepe/Desktop/Server_With_Auth/server/logs/log.txt")
 	defer outputFile.Close()
 
