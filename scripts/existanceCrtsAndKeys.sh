@@ -15,7 +15,7 @@ SRVcrt="certs/${4:-server.crt}"
 if ! [ -e "$CAkey" ] || ! [ -e "$CAcrt" ] || ! [ -e "$SRVkey" ] || ! [ -e "$SRVcrt" ]; then
     rm -f $CAkey $CAcrt $SRVkey $SRVcrt
     echo "Удалили всё, чтобы заново нагенерить!"
-    /home/mighty-pepe/Desktop/Server_With_Auth/server/scripts/genKeys.sh
+    /home/mighty-pepe/Desktop/Server_With_Auth/scripts/genKeys.sh
 else 
     echo "Все файлы ключей и сертификатов на месте!"
 fi

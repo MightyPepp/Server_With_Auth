@@ -9,7 +9,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	handlers "serverTLSHashedPassword/internal/handlers"
+	handlers "Server_With_Auth/internal/handlers"
 )
 
 func configServerTLS() (*http.ServeMux, *http.Server, error) {
@@ -46,7 +46,7 @@ func main() {
 	psswds["User2"] = "Psswd2"
 	myHandler := handlers.NewMyHandler(psswds)
 
-	myLogger, outputFile := getLogger("/home/mighty-pepe/Desktop/Server_With_Auth/server/logs/log.txt")
+	myLogger, outputFile := getLogger("/home/mighty-pepe/Desktop/Server_With_Auth/logs/log.txt")
 	defer outputFile.Close()
 
 	mux, server, err := configServerTLS()

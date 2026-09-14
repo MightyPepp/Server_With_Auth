@@ -13,7 +13,7 @@ openssl req -new -key server.key -out server.csr \
 openssl x509 -req -days 365 -in server.csr \
   -CA ca.crt -CAkey ca.key -CAcreateserial \
   -out server.crt \
-  -extfile /home/mighty-pepe/Desktop/Server_With_Auth/server/configs/san.cnf -extensions v3_req
+  -extfile /home/mighty-pepe/Desktop/Server_With_Auth/configs/san.cnf -extensions v3_req
 
 mv ca.key ./private
 mv server.key ./private
