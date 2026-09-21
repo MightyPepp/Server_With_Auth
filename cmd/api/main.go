@@ -15,7 +15,7 @@ import (
 func configServerTLS() (*http.ServeMux, *http.Server, error) {
 	mux := http.NewServeMux()
 
-	cert, err := tls.LoadX509KeyPair("/etc/ssl/self_signed/certs/server.crt", "/etc/ssl/self_signed/private/server.key")
+	cert, err := tls.LoadX509KeyPair("self_signed/certs/server.crt", "self_signed/private/server.key")
 	if err != nil {
 		log.Fatal("Ошибка загрузки сертификата:", err)
 		return nil, nil, err
@@ -46,7 +46,7 @@ func main() {
 	psswds["User2"] = "Psswd2"
 	myHandler := handlers.NewMyHandler(psswds)
 
-	myLogger, outputFile := getLogger("/home/mighty-pepe/Desktop/Server_With_Auth/logs/log.txt")
+	myLogger, outputFile := getLogger("logs/log.txt")
 	defer outputFile.Close()
 
 	mux, server, err := configServerTLS()
