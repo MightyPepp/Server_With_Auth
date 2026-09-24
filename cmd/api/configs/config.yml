@@ -1,0 +1,9 @@
+server:
+  port: ":8443"
+  path_to_certfile: "/home/mighty-pepe/Desktop/Server_With_Auth/cmd/api/certs/server.crt"
+  path_to_keyfile: "/home/mighty-pepe/Desktop/Server_With_Auth/cmd/api/private/server.key"
+db:
+  # TODO: разобраться со строкой подключения
+logger:
+  logger_prefix: "APP:"
+  path_to_logfile: "/home/mighty-pepe/Desktop/Server_With_Auth/logs/log.txt"
