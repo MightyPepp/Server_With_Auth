@@ -2,6 +2,7 @@ package main
 
 import ()
 
+// TODO: запуск сервера написать
 func main() {
 	// go func() {
 	// 	if err, server := srv.StartServer(); err != http.ErrServerClosed {
