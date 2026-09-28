@@ -8,7 +8,7 @@ func NewHealthHandler() *HealthHandler {
 	return &HealthHandler{}
 }
 
-func RegisterHealthHandler(mux *http.ServeMux, hh *HealthHandler) {
+func (hh *HealthHandler) RegisterHealthHandler(mux *http.ServeMux) {
 	mux.HandleFunc("/health", hh.pingServer)
 }
 
