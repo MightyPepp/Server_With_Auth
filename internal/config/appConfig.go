@@ -27,11 +27,13 @@ type LoggerConfig struct {
 // TODO:
 type DBConfig struct {} 
 
-func GetConfig() (cfg *AppConfig, err error) {
+func GetConfig() (*AppConfig, error) {
 	const op = "GetConfig"
-	if err = cleanenv.ReadConfig(ConfigPath, cfg); err != nil {
+
+	var cfg AppConfig
+	if err := cleanenv.ReadConfig(ConfigPath, &cfg); err != nil {
 		log.Printf("\nFROM: %s\nОшибка парсинга файла конфигурации: %s", op, err)
 		return nil, err
 	}
-	return cfg, nil
+	return &cfg, nil
 }
