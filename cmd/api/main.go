@@ -10,7 +10,7 @@ import (
 	handlers 	"Server_With_Auth/internal/handlers"
 )
 
-// TODO: запуск сервера написать
+// TODO: golangci настроить
 func main() {
 	const op = "main"
 

@@ -4,3 +4,4 @@
 *.csr
 *.srl
 self_signed/
+.vscode/

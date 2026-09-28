@@ -5,7 +5,6 @@ import (
 	"os"
 )
 
-// TODO:
 func GetAndConfigLoggerFunc() (appLogger *log.Logger, file *os.File, err error) {
 	const op = "ConfigLoggerFunc"
 

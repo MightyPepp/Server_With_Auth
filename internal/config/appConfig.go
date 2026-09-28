@@ -19,7 +19,6 @@ type ServerConfig struct {
 	PathToKeyfile  	string `yaml:"path_to_keyfile"`
 }
 
-// TODO:
 type LoggerConfig struct {
 	LoggerPrefix	string `yaml:"logger_prefix"`
 	PathToLogfile 	string `yaml:"path_to_logfile"`
