@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN go build -o server ./cmd/api/main.go
+RUN go get github.com/ilyakaznacheev/cleanenv@v1.5.0 && go build -o server ./cmd/api/main.go
 
 EXPOSE 8443
 

@@ -7,7 +7,7 @@ import (
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
-const ConfigPath = "/home/mighty-pepe/Desktop/Server_With_Auth/cmd/api/configs/config.yml"
+const ConfigPath = "/app/cmd/api/configs/config.yml"
 
 type AppConfig struct {
 	ServerConfig	`yaml:"server"`
