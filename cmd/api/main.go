@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 	
-	srv 		"Server_With_Auth/internal/server"
+	cfg 		"Server_With_Auth/internal/config"
 	handlers 	"Server_With_Auth/internal/handlers"
 )
 
@@ -14,10 +14,11 @@ import (
 func main() {
 	const op = "main"
 
-	appLogger, logFile, appServer, mux, err := srv.GetConfiguredServerFunc()
+	appLogger, logFile, appServer, mux, err := cfg.ConfigureApp()
 	defer logFile.Close()
 	if err != nil {
-		appLogger.Printf("\nFROM: %s\nОшибка получения сконфигурированного сервера: %s", op, err)
+		appLogger.Printf("\nFROM: %s\nОшибка получения сконфигурированного приложения: %s", op, err)
+		return
 	}
 
 	hh := handlers.NewHealthHandler()
@@ -32,7 +33,7 @@ func main() {
 	}()
 
 	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, syscall.SIGTERM)
+	signal.Notify(sigChan, syscall.SIGTERM,  syscall.SIGINT)
 	<-sigChan
 	appLogger.Printf("\nFROM: %s\nПолучен SIGTERM, работа сервера завершается...", op)
 	if err := appServer.Shutdown(context.Background()); err != nil {

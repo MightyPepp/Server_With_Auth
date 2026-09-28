@@ -6,16 +6,10 @@ import (
 	"log"
 )
 
-func GetAndConfigServerFunc() (server *http.Server, mux *http.ServeMux, err error) {
+func GetAndConfigServerFunc(cfg *AppConfig) (server *http.Server, mux *http.ServeMux, err error) {
 	const op = "ConfigServerFunc"
 
-	appConfig, err := GetConfig()
-	if err != nil {
-		log.Printf("\nFROM: %s\nОшибка получения конфигурации сервера: %s", op, err)
-		return nil, nil, err
-	}
-
-	cert, err := tls.LoadX509KeyPair(appConfig.ServerConfig.PathToCertfile, appConfig.ServerConfig.PathToKeyfile)
+	cert, err := tls.LoadX509KeyPair(cfg.ServerConfig.PathToCertfile, cfg.ServerConfig.PathToKeyfile)
 	if err != nil {
 		log.Printf("\nFROM: %s\nОшибка чтения файла сертификата или ключа: %s", op, err)
 		return nil, nil, err
@@ -24,7 +18,7 @@ func GetAndConfigServerFunc() (server *http.Server, mux *http.ServeMux, err erro
 	mux = &http.ServeMux{}
 
 	server = &http.Server{
-		Addr:    appConfig.ServerConfig.Port,
+		Addr:    cfg.ServerConfig.Port,
 		Handler: mux,
 		TLSConfig: &tls.Config{
 			Certificates: []tls.Certificate{cert},

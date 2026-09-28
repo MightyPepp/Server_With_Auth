@@ -5,16 +5,10 @@ import (
 	"os"
 )
 
-func GetAndConfigLoggerFunc() (appLogger *log.Logger, file *os.File, err error) {
+func GetAndConfigLoggerFunc(cfg *AppConfig) (appLogger *log.Logger, file *os.File, err error) {
 	const op = "ConfigLoggerFunc"
 
-	аppConfig, err := GetConfig()
-	if err != nil {
-		log.Printf("\nFROM: %s\nОшибка получения конфигурации сервера: %s", op, err)
-		return nil, nil, err
-	}
-
-	logFile, err := os.OpenFile(аppConfig.LoggerConfig.PathToLogfile, os.O_WRONLY, 0644)
+	logFile, err := os.OpenFile(cfg.LoggerConfig.PathToLogfile, os.O_WRONLY, 0644)
 	if err != nil {
 		log.Printf("\nFROM: %s\nОшибка открытия файла логов: %s", op, err)
 		return nil, nil, err
@@ -22,7 +16,7 @@ func GetAndConfigLoggerFunc() (appLogger *log.Logger, file *os.File, err error) 
 
 	appLogger = &log.Logger{}
 
-	appLogger.SetPrefix(аppConfig.LoggerConfig.LoggerPrefix)
+	appLogger.SetPrefix(cfg.LoggerConfig.LoggerPrefix)
 	appLogger.SetOutput(logFile)
 
 	return appLogger, logFile, nil
