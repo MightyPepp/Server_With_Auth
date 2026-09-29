@@ -19,7 +19,6 @@ func GetAndConfigServerFunc(cfg *AppConfig) (server *http.Server, mux *http.Serv
 
 	server = &http.Server{
 		Addr:    cfg.ServerConfig.Port,
-		Handler: mux,
 		TLSConfig: &tls.Config{
 			Certificates: []tls.Certificate{cert},
 		},

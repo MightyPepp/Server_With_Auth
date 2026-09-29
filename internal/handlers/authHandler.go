@@ -10,7 +10,7 @@ func NewAuthHandler() *AuthHandler {
 	return &AuthHandler{}
 }
 
-func (h *AuthHandler) Authorization(w http.ResponseWriter, r *http.Request) {
+func (h *AuthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	user, password, ok := r.BasicAuth()	
 	if !ok {
 		http.Error(w, "Unauthorizes", http.StatusUnauthorized)

@@ -8,11 +8,7 @@ func NewHealthHandler() *HealthHandler {
 	return &HealthHandler{}
 }
 
-func (hh *HealthHandler) RegisterHealthHandler(mux *http.ServeMux) {
-	mux.HandleFunc("/health", hh.pingServer)
-}
-
-func (h *HealthHandler) pingServer(w http.ResponseWriter, r *http.Request) {
+func (h *HealthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Server is running!"))
 }

@@ -26,7 +26,7 @@ type LoggerConfig struct {
 	PathToLogfile 	string `yaml:"path_to_logfile"`
 }
 
-// TODO: Сделат подлючение к БД и БД...
+// TODO: Сделат подлючение к БД и саму БД
 type DBConfig struct {} 
 
 func GetConfig() (*AppConfig, error) {
